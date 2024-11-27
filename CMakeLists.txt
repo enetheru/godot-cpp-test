@@ -1,3 +1,22 @@
+cmake_minimum_required( VERSION 3.17 )
+project( godot-cpp-test
+        VERSION 0.0.0
+        DESCRIPTION ""
+        HOMEPAGE_URL ""
+        LANGUAGES CXX
+)
+
+include( FetchContent )
+
+FetchContent_Declare( godot-cpp
+        GIT_REPOSITORY https://github.com/godotengine/godot-cpp.git
+        GIT_TAG "master"
+        SYSTEM
+        EXCLUDE_FROM_ALL
+)
+
+FetchContent_MakeAvailable( godot-cpp )
+
 # Testing Extension
 # This is only linked to the template_release config.
 # so it requires the template_release version of godot to run.
