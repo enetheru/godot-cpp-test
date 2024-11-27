@@ -13,3 +13,14 @@ export_presets.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# Generated directories with binaries
+build
+bin
+
+# System/tool-specific ignores
+.directory
+*~
+
+#CLion stuff
+.idea/
