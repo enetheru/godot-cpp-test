@@ -9,19 +9,15 @@ project( godot-cpp-test
 include( FetchContent )
 
 FetchContent_Declare( godot-cpp
-        GIT_REPOSITORY https://github.com/godotengine/godot-cpp.git
-        GIT_TAG "master"
+        GIT_REPOSITORY https://github.com/enetheru/godot-cpp.git
+        GIT_TAG "privatise"
         SYSTEM
         EXCLUDE_FROM_ALL
 )
 
 FetchContent_MakeAvailable( godot-cpp )
 
-# Testing Extension
-# This is only linked to the template_release config.
-# so it requires the template_release version of godot to run.
-
-add_library( godot-cpp-test SHARED EXCLUDE_FROM_ALL )
+add_library( godot-cpp-test SHARED )
 
 target_sources( godot-cpp-test
         PRIVATE
@@ -52,8 +48,8 @@ set_target_properties( godot-cpp-test
         CXX_EXTENSIONS OFF
         CXX_VISIBILITY_PRESET ${GODOT_SYMBOL_VISIBILITY}
 
-        POSITION_INDEPENDENT_CODE ON
         BUILD_RPATH_USE_ORIGIN ON
+
         LINK_SEARCH_START_STATIC ON
         LINK_SEARCH_END_STATIC ON
 
@@ -74,9 +70,6 @@ if( CMAKE_SYSTEM_NAME STREQUAL Darwin )
 
     set_target_properties( godot-cpp-test
             PROPERTIES
-            LIBRARY_OUTPUT_DIRECTORY "$<1:${OUTPUT_DIR}>"
-            RUNTIME_OUTPUT_DIRECTORY "$<1:${OUTPUT_DIR}>"
-
             OUTPUT_NAME "gdexample.macos.${TEST_TARGET}"
             SUFFIX ""
 

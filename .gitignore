@@ -21,3 +21,9 @@ mono_crash.*.json
 #CLion stuff
 .idea/
 cmake-build-*/
+.vs/
+
+out/
+
+project/bin/*.dll
+project/bin/*.pdb
