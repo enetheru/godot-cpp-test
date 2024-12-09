@@ -4,7 +4,7 @@ set( GODOTCPP_GIT_URL "http://github.com/enetheru/godot-cpp.git" CACHE STRING
         "The git url of godot-cpp to fetch" )
 set( GODOTCPP_GIT_BRANCH "master" CACHE STRING "The git branch of godot-cpp to fetch" )
 
-project( godot-cpp-test
+project( gdexample
         VERSION 0.0.0
         DESCRIPTION ""
         HOMEPAGE_URL ""
@@ -22,9 +22,9 @@ FetchContent_Declare( godot-cpp
 
 FetchContent_MakeAvailable( godot-cpp )
 
-add_library( godot-cpp-test SHARED )
+add_library( gdexample SHARED )
 
-target_sources( godot-cpp-test
+target_sources( gdexample
         PRIVATE
         src/example.cpp
         src/example.h
@@ -36,7 +36,7 @@ target_sources( godot-cpp-test
 set( TEST_TARGET "template_debug" CACHE STRING "Which godot-cpp::target to link against" )
 set_property( CACHE TEST_TARGET PROPERTY STRINGS "template_debug;template_release;editor" )
 
-target_link_libraries( godot-cpp-test
+target_link_libraries( gdexample
         PRIVATE
         godot-cpp::${TEST_TARGET} )
 
@@ -47,7 +47,7 @@ get_target_property( GODOT_ARCH godot-cpp::${TEST_TARGET} GODOT_ARCH )
 
 set( OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/project/bin/" )
 
-set_target_properties( godot-cpp-test
+set_target_properties( gdexample
         PROPERTIES
         CXX_STANDARD 17
         CXX_EXTENSIONS OFF
@@ -73,7 +73,7 @@ if( CMAKE_SYSTEM_NAME STREQUAL Darwin )
 
     set( OUTPUT_DIR "${OUTPUT_DIR}/libgdexample.macos.${TEST_TARGET}.framework")
 
-    set_target_properties( godot-cpp-test
+    set_target_properties( gdexample
             PROPERTIES
             OUTPUT_NAME "gdexample.macos.${TEST_TARGET}"
             SUFFIX ""
