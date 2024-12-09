@@ -1,4 +1,9 @@
 cmake_minimum_required( VERSION 3.17 )
+
+set( GODOTCPP_GIT_URL "http://github.com/enetheru/godot-cpp.git" CACHE STRING
+        "The git url of godot-cpp to fetch" )
+set( GODOTCPP_GIT_BRANCH "master" CACHE STRING "The git branch of godot-cpp to fetch" )
+
 project( godot-cpp-test
         VERSION 0.0.0
         DESCRIPTION ""
@@ -9,8 +14,8 @@ project( godot-cpp-test
 include( FetchContent )
 
 FetchContent_Declare( godot-cpp
-        GIT_REPOSITORY https://github.com/enetheru/godot-cpp.git
-        GIT_TAG "privatise"
+        GIT_REPOSITORY "${GODOTCPP_GIT_URL}"
+        GIT_TAG "${GODOTCPP_GIT_BRANCH}"
         SYSTEM
         EXCLUDE_FROM_ALL
 )
