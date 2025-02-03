@@ -18,10 +18,12 @@ find_package(Python3 3.4 REQUIRED) # pathlib should be present
 # Godot-cpp
 set( GODOTCPP_GIT_URL "http://github.com/enetheru/godot-cpp.git" CACHE STRING "The git url of godot-cpp to fetch" )
 set( GODOTCPP_GIT_BRANCH "master" CACHE STRING "The git branch of godot-cpp to fetch" )
+set( GODOT_BUILD_PROFILE "${CMAKE_SOURCE_DIR}/build_profile.json" )
 FetchContent_Declare( godot-cpp
         GIT_REPOSITORY ${GODOTCPP_GIT_URL}
         GIT_TAG ${GODOTCPP_GIT_BRANCH}
         GIT_PROGRESS ON
+        SOURCE_DIR "${CMAKE_SOURCE_DIR}/extern/godot-cpp"
 )
 FetchContent_MakeAvailable( godot-cpp )
 
