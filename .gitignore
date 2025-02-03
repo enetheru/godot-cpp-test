@@ -27,3 +27,5 @@ out/
 
 project/bin/*.dll
 project/bin/*.pdb
+
+extern/
