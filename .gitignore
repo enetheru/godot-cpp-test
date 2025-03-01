@@ -29,3 +29,5 @@ project/bin/*.dll
 project/bin/*.pdb
 
 extern/
+
+*.ilk

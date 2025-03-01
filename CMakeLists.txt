@@ -9,14 +9,20 @@ to check building from an external project.
 
 cmake_minimum_required( VERSION 3.17 )
 
+#[=============================[ Global Options ]=============================]
+# set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+# set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
+
 #[==============================[ Dependencies ]==============================]
 include( FetchContent )
+
+set( FETCHCONTENT_FULLY_DISCONNECTED OFF )
 
 # Python
 find_package(Python3 3.4 REQUIRED) # pathlib should be present
 
 # Godot-cpp
-set( GODOTCPP_GIT_URL "http://github.com/enetheru/godot-cpp.git" CACHE STRING "The git url of godot-cpp to fetch" )
+set( GODOTCPP_GIT_URL "http://github.com/godotengine/godot-cpp.git" CACHE STRING "The git url of godot-cpp to fetch" )
 set( GODOTCPP_GIT_BRANCH "master" CACHE STRING "The git branch of godot-cpp to fetch" )
 set( GODOT_BUILD_PROFILE "${CMAKE_SOURCE_DIR}/build_profile.json" )
 FetchContent_Declare( godot-cpp
@@ -41,13 +47,15 @@ project( gdexample
 set( TEST_TARGET "template_debug" CACHE STRING "Which godot-cpp::target to link against" )
 set_property( CACHE TEST_TARGET PROPERTY STRINGS "template_debug;template_release;editor" )
 
+# Get useful properties from godot-cpp
+get_target_property( GODOT_SUFFIX godot-cpp::${TEST_TARGET} GODOT_SUFFIX )
+
 #[=============================[ Configuration ]=============================]
+set( OUTPUT_NAME "${PROJECT_NAME}${GODOT_SUFFIX}" )
+set( OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/project/bin/" )
+
 if( CMAKE_SYSTEM_NAME STREQUAL Darwin )
-    set( OUTPUT_NAME "gdexample.macos.${TEST_TARGET}" )
-    set( OUTPUT_DIR "${OUTPUT_DIR}/libgdexample.macos.${TEST_TARGET}.framework")
-else()
-    set( OUTPUT_NAME "gdexample.${GODOT_PLATFORM}.${GODOT_TARGET}.${GODOT_ARCH}" )
-    set( OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/project/bin/" )
+    set( OUTPUT_DIR "${OUTPUT_DIR}/lib${PROJECT_NAME}.macos.${TEST_TARGET}.framework")
 endif()
 
 #[================================[ Doc-Gen ]================================]
@@ -56,9 +64,9 @@ file( GLOB_RECURSE XML_SOURCES LIST_DIRECTORIES NO CONFIGURE_DEPENDS
 generate_doc_source( DOC_DATA "${XML_SOURCES}" )
 
 #[===========================[ Target Definition ]===========================]
-add_library( gdexample SHARED )
+add_library( ${PROJECT_NAME} SHARED )
 
-target_sources( gdexample
+target_sources( ${PROJECT_NAME}
         PRIVATE
         src/example.cpp
         src/example.h
@@ -68,16 +76,9 @@ target_sources( gdexample
         ${DOC_DATA}
 )
 
+target_link_libraries( ${PROJECT_NAME} PRIVATE godot-cpp::${TEST_TARGET} )
 
-target_link_libraries( gdexample PRIVATE godot-cpp::${TEST_TARGET} )
-
-# Get useful properties from godot-cpp
-get_target_property( GODOT_PLATFORM godot-cpp::${TEST_TARGET} GODOT_PLATFORM )
-get_target_property( GODOT_TARGET godot-cpp::${TEST_TARGET} GODOT_TARGET )
-get_target_property( GODOT_ARCH godot-cpp::${TEST_TARGET} GODOT_ARCH )
-get_target_property( OSX_ARCH godot-cpp::${TEST_TARGET} OSX_ARCHITECTURES )
-
-set_target_properties( gdexample
+set_target_properties( ${PROJECT_NAME}
         PROPERTIES
         CXX_STANDARD 17
         CXX_EXTENSIONS OFF
@@ -98,6 +99,4 @@ set_target_properties( gdexample
 
         PREFIX "lib"
         OUTPUT_NAME "${OUTPUT_NAME}"
-
-        OSX_ARCHITECTURES "${OSX_ARCH}" #Darwin Only, ignored on other platforms
 )
