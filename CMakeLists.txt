@@ -24,7 +24,7 @@ find_package(Python3 3.4 REQUIRED) # pathlib should be present
 # Godot-cpp
 set( GODOTCPP_GIT_URL "http://github.com/godotengine/godot-cpp.git" CACHE STRING "The git url of godot-cpp to fetch" )
 set( GODOTCPP_GIT_BRANCH "master" CACHE STRING "The git branch of godot-cpp to fetch" )
-set( GODOT_BUILD_PROFILE "${CMAKE_SOURCE_DIR}/build_profile.json" )
+set( GODOTCPP_BUILD_PROFILE "${CMAKE_SOURCE_DIR}/build_profile.json" )
 FetchContent_Declare( godot-cpp
         GIT_REPOSITORY ${GODOTCPP_GIT_URL}
         GIT_TAG ${GODOTCPP_GIT_BRANCH}
@@ -48,10 +48,10 @@ set( TEST_TARGET "template_debug" CACHE STRING "Which godot-cpp::target to link 
 set_property( CACHE TEST_TARGET PROPERTY STRINGS "template_debug;template_release;editor" )
 
 # Get useful properties from godot-cpp
-get_target_property( GODOT_SUFFIX godot-cpp::${TEST_TARGET} GODOT_SUFFIX )
+get_target_property( GODOTCPP_SUFFIX godot-cpp::${TEST_TARGET} GODOTCPP_SUFFIX )
 
 #[=============================[ Configuration ]=============================]
-set( OUTPUT_NAME "${PROJECT_NAME}${GODOT_SUFFIX}" )
+set( OUTPUT_NAME "${PROJECT_NAME}${GODOTCPP_SUFFIX}" )
 set( OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/project/bin/" )
 
 if( CMAKE_SYSTEM_NAME STREQUAL Darwin )
@@ -82,7 +82,7 @@ set_target_properties( ${PROJECT_NAME}
         PROPERTIES
         CXX_STANDARD 17
         CXX_EXTENSIONS OFF
-        CXX_VISIBILITY_PRESET ${GODOT_SYMBOL_VISIBILITY}
+        CXX_VISIBILITY_PRESET ${GODOTCPP_SYMBOL_VISIBILITY}
 
         POSITION_INDEPENDENT_CODE ON
         BUILD_RPATH_USE_ORIGIN ON
