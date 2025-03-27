@@ -29,7 +29,6 @@ FetchContent_Declare( godot-cpp
         GIT_REPOSITORY ${GODOTCPP_GIT_URL}
         GIT_TAG ${GODOTCPP_GIT_BRANCH}
         GIT_PROGRESS ON
-        SOURCE_DIR "${CMAKE_SOURCE_DIR}/extern/godot-cpp"
 )
 FetchContent_MakeAvailable( godot-cpp )
 
@@ -48,7 +47,7 @@ set( TEST_TARGET "template_debug" CACHE STRING "Which godot-cpp::target to link 
 set_property( CACHE TEST_TARGET PROPERTY STRINGS "template_debug;template_release;editor" )
 
 # Get useful properties from godot-cpp
-get_target_property( GODOTCPP_SUFFIX godot-cpp::${TEST_TARGET} GODOTCPP_SUFFIX )
+get_target_property( GODOTCPP_SUFFIX godot-cpp GODOTCPP_SUFFIX )
 
 #[=============================[ Configuration ]=============================]
 set( OUTPUT_NAME "${PROJECT_NAME}${GODOTCPP_SUFFIX}" )
@@ -76,7 +75,7 @@ target_sources( ${PROJECT_NAME}
         ${DOC_DATA}
 )
 
-target_link_libraries( ${PROJECT_NAME} PRIVATE godot-cpp::${TEST_TARGET} )
+target_link_libraries( ${PROJECT_NAME} PRIVATE godot-cpp )
 
 set_target_properties( ${PROJECT_NAME}
         PROPERTIES
